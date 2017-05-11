@@ -1,0 +1,11 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="zui5_hcmpf_workitems.App" xmlns:html="http://www.w3.org/1999/xhtml">
+		<App>
+			<Page title="HCM PF Inbox for {/firstName} {/lastName}" id="mainPage">
+				<content>
+					<mvc:XMLView viewName="zui5_hcmpf_workitems.view.Workitems" />
+				</content>
+			</Page>	
+		</App>
+	
+</mvc:View>

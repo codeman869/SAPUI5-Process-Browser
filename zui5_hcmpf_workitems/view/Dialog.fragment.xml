@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	
+	<ViewSettingsDialog confirm="handleConfirm">
+		<sortItems>
+			<ViewSettingsItem text="PERNR" key="pernr" selected="true" />
+			<ViewSettingsItem text="Process Reference Num" key="prn" selected="false" />
+			<!--  
+			<ViewSettingsItem text="Work Item ID" key="instId" selected="false" />
+			-->
+			<ViewSettingsItem text="Bureau" key="werks" selected="false" />
+			<ViewSettingsItem text="Personnel Area" key="name1" selected="false" />
+			<ViewSettingsItem text="Employee Name" key="ename" selected="false" />
+			<ViewSettingsItem text="Title" key="title" selected="false" />
+			<ViewSettingsItem text="Form" key="form" selected="false" />
+			<ViewSettingsItem text="Effective Date" key="effDate" selected="false" />
+			<ViewSettingsItem text="Comments" key="comments" selected="false" />
+		</sortItems>
+	<filterItems>
+		<ViewSettingsCustomItem id="idNameFilter" text="Name" key="ename___Filter">
+			<customControl>
+				<Input placeholder="Enter Name..."/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idWerksFilter" text="Bureau" key="werks___Filter">
+			<customControl>
+				<Input placeholder="Enter Bureau"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idPAFilter" text="Personnel Area" key="name1___Filter">
+			<customControl>
+				<Input placeholder="Personnel Area contains"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idPRNFilter" text="Process Reference Number" key="prn___Filter">
+			<customControl>
+				<Input placeholder="Process Ref Num contains"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idTitleFilter" text="Title contains" key="title___Filter">
+			<customControl>
+				<Input placeholder="Enter Title"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idFormFilter" text="Form contains" key="form___Filter">
+			<customControl>
+				<Input placeholder="Form contains"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idStepFilter" text="Step contains" key="step___Filter">
+			<customControl>
+				<Input placeholder="Step contains"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+		<ViewSettingsCustomItem id="idEffDateFilter" text="Effective Date" key="effDate___Filter">
+			<customControl>
+				<Input placeholder="Effective Date"/>
+			</customControl>
+		</ViewSettingsCustomItem>
+	</filterItems>
+	</ViewSettingsDialog>	
+	
+</core:FragmentDefinition>

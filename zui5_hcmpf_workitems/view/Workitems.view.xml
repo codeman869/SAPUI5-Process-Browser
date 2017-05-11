@@ -1,0 +1,75 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="zui5_hcmpf_workitems.view.Workitems" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Table items="{/}" id="workItemsTable" selectionChange="onHandleRow" mode="SingleSelectMaster">
+		<headerToolbar>
+			<Toolbar class="sapUiResponsive">
+				<Text text="Work Items In Progress" class="sapUiResponsiveMargin"/>
+				<ToolbarSpacer />
+				<SearchField search="onFilterWorkitems" class="sapUiResponsiveMargin" />
+				<ToolbarSpacer />
+				<Button icon="sap-icon://refresh" press="onHandleRefresh" class="sapUiResponsiveMargin"  id="refreshButton"/>
+				<ToolbarSpacer />
+				<Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleViewSettings" class="sapUiResponsiveMargin" />
+				
+			</Toolbar>
+		</headerToolbar>
+		<columns>
+			<Column>
+				<Text text="PERNR" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="800px">
+				<Text text="Process Reference Number" />
+			</Column>
+			<!--  
+			<Column demandPopin="true" minScreenWidth="Tablet">
+				<Text text="Work Item ID" />
+			</Column>
+			-->
+			<Column>
+				<Text text="Bureau" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="Tablet">
+				<Text text="Personnel Area" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="Tablet">
+				<Text text="Employee Name" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="800px">
+				<Text text="Title" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="Tablet">
+				<Text text="Form" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="Tablet">
+				<Text text="Step" />
+			</Column>
+			<Column>
+				<Text text="Effective Date" />
+			</Column>
+			<Column demandPopin="true" minScreenWidth="800px">
+				<Text text="Comments" />
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem>
+				<cells>
+					<Text text="{pernr}" />
+					<Text text="{prn}" />
+					<!--  
+					<Text text="{instId}" />
+					-->
+					<Text text="{werks}" />
+					<Text text="{name1}" />
+					<Text text="{ename}" />
+					<Text text="{title}" />
+					<Text text="{form}" />
+					<Text text="{step}" />
+					<Text text="{path: 'effDate',
+								 formatter: '.formatter.dateText'
+								 }" />
+					<Text text="{comments}" />
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</core:View>
