@@ -142,6 +142,12 @@ sap.ui.define([
 		
 		onHandleRefresh: function(oEvent) {
 			var oModel = this.getView().getModel();
+			var headers = {
+					'Cache-Control': 'no-cache',
+					Pragma: 'no-cache',
+					Expires: -1
+						
+			};
 			
 			if(jQuery.sap.getUriParameters().get('test') === 'X') {
 				
@@ -150,7 +156,9 @@ sap.ui.define([
 				
 			} else {
 				
-				oModel.loadData("/ui5_workitems");
+				//Headers are used to force IE to refresh new data every time the refresh button is hit
+				
+				oModel.loadData("/ui5_workitems", "", true, "GET", false, false, headers);
 				
 			}
 			
