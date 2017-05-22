@@ -147,11 +147,16 @@ sap.ui.define([
 				
 				oModel.loadData("/zui5_hcmpf_workitems/data/forms.json");
 				
+				
 			} else {
 				
 				oModel.loadData("/ui5_workitems");
 				
 			}
+			
+			oModel.attachRequestCompleted(function(){
+				MessageToast.show("Data Refreshed");
+			});
 			
 		}
 		
