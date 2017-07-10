@@ -1,5 +1,5 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="zui5_hcmpf_workitems.view.Workitems" xmlns:html="http://www.w3.org/1999/xhtml">
+		controllerName="zui5_hcmpf_workitems.controller.Workitems" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Table items="{/}" id="workItemsTable" selectionChange="onHandleRow" mode="SingleSelectMaster">
 		<headerToolbar>
 			<Toolbar class="sapUiResponsive">
