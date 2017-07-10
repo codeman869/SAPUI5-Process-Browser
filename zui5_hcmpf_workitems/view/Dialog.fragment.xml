@@ -4,6 +4,7 @@
 	
 	<ViewSettingsDialog confirm="handleConfirm">
 		<sortItems>
+		<ViewSettingsItem text="Effective Date" key="effDate" selected="false" />
 			<ViewSettingsItem text="PERNR" key="pernr" selected="true" />
 			<ViewSettingsItem text="Process Reference Num" key="prn" selected="false" />
 			<!--  
@@ -14,10 +15,18 @@
 			<ViewSettingsItem text="Employee Name" key="ename" selected="false" />
 			<ViewSettingsItem text="Title" key="title" selected="false" />
 			<ViewSettingsItem text="Form" key="form" selected="false" />
-			<ViewSettingsItem text="Effective Date" key="effDate" selected="false" />
+			
 			<ViewSettingsItem text="Comments" key="comments" selected="false" />
 		</sortItems>
 	<filterItems>
+		<ViewSettingsCustomItem id="idEffDateFilter" text="Effective Date" key="effDate___Filter">
+			<customControl>
+				<!--  <Input placeholder="Effective Date"/>
+				
+				-->
+				<DateRangeSelection placeholder="Effective Date: MMM dd, yyyy - MMM dd, yyyy"/>
+			</customControl>
+		</ViewSettingsCustomItem>
 		<ViewSettingsCustomItem id="idNameFilter" text="Name" key="ename___Filter">
 			<customControl>
 				<Input placeholder="Enter Name..."/>
@@ -53,11 +62,7 @@
 				<Input placeholder="Step contains"/>
 			</customControl>
 		</ViewSettingsCustomItem>
-		<ViewSettingsCustomItem id="idEffDateFilter" text="Effective Date" key="effDate___Filter">
-			<customControl>
-				<Input placeholder="Effective Date"/>
-			</customControl>
-		</ViewSettingsCustomItem>
+		
 	</filterItems>
 	</ViewSettingsDialog>	
 	

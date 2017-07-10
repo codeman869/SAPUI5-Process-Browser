@@ -10,25 +10,34 @@ sap.ui.define([
 ], function(Controller, JSONModel, Sorter, Filter, jQuery, FilterOperator, MessageToast, formatter){
 	
 	return Controller.extend("zui5_hcmpf_workitems.view.Workitems", {
-		
+	/*
+	Guard against bugs
+	
+	("`-''-/").___..--''"`-._
+	 `6_ 6  )   `-.  (     ).`-.__.`)
+	 (_Y_.)'  ._   )  `._ `. ``-..-'
+	_..`--'_..-_/  /--'_.' ,'
+   (il).-''  (li).'  ((!.-'
+  
+	*/
 		formatter: formatter,
+		oView: null,
+		oTable: null,
+		refreshButton: null, 
+		busyIndicator: null,
+		testStatus: false,
 		
 		onInit: function() {
-			
+			this.oView = this.getView();
+			this.oTable = this.oView.byId("workItemsTable"); 
+			this.refreshButton = this.oView.byId("refreshButton");
+			this.busyIndicator = this.oView.byId("busyIndicator");
+			this.testStatus = jQuery.sap.getUriParameters().get('test') === 'X';
 			
 			var oModel = new JSONModel();
 			
-			if(jQuery.sap.getUriParameters().get('test') === 'X') {
-			
-				oModel.loadData("/zui5_hcmpf_workitems/data/forms.json");
-				
-			} else {
-				
-				oModel.loadData("/ui5_workitems");
-				
-			}
-			
-			this.getView().setModel(oModel);
+			this.oView.setModel(oModel);
+			this._fetchServerData();
 			
 		},
 		
@@ -41,82 +50,97 @@ sap.ui.define([
 			
 		},
 		
-		handleConfirm: function(oEvent) {
-			//console.log("Changing View Settings")
+		setSorters: function(params) {
 			
-			var oView = this.getView();
-			
-			var oTable = oView.byId("workItemsTable");
-			
-			var oBinding = oTable.getBinding("items");
-			var mParams = oEvent.getParameters();
+			var oBinding = this.oTable.getBinding("items");
 			
 			var aSorters = [];
-			var sPath = mParams.sortItem.getKey();
+			var sPath = params.sortItem.getKey();
 			
-			var bDescending = mParams.sortDescending;
+			var bDescending = params.sortDescending;
 			
 			aSorters.push(new Sorter(sPath, bDescending));
 			
 			oBinding.sort(aSorters);
+
 			
-			//MessageToast.show(oEvent.getParameters());
-			
+		},
+		
+		setFilters: function() {
 			var aFilters = [];
 			var filters = this._oDialog.getFilterItems();
+			var oBinding = this.oTable.getBinding("items");
+			
+			//Goes through all the custom controls and creates a new filter to add
+			// to the filter array and then binds those filters to the table.
 			
 			jQuery.each(filters, function(i,Item){
-				var value = Item.getCustomControl().getValue();
+				var oCtrl = Item.getCustomControl();
+				var value = oCtrl.getValue();
+				
 				if(value !== "") {
-					//console.log(Item.getKey());
 					
 					var keyValues = Item.getKey().split("___");
 					
-					var oFilter = new Filter(keyValues[0], 'Contains', value + "");
-					//console.log()
+					if(keyValues[0] === 'effDate') {
+						//Special handling for the effective date filter
+						var fromDate = oCtrl.getDateValue();
+						var toDate = oCtrl.getSecondDateValue();
+						
+						var year = fromDate.getFullYear();
+						var month = fromDate.getMonth() + 1 < 10 ? "0" + (fromDate.getMonth() + 1) : fromDate.getMonth() + 1;   
+						var day = fromDate.getDate() < 10 ? "0" + fromDate.getDate() : fromDate.getDate();
+						var sFromDate = year + "-"+month+"-"+day; 
+						
+						year = toDate.getFullYear();
+						month = toDate.getMonth() + 1 < 10 ? "0" + (toDate.getMonth() + 1) : toDate.getMonth() + 1;   
+						day = toDate.getDate() < 10 ? "0" + toDate.getDate() : toDate.getDate();
+						var sToDate = year + "-" + month + "-" + day;
+
+						
+						var oFilter = new Filter(keyValues[0], 'BT', sFromDate, sToDate);
+						
+					} else {
+						
+						var oFilter = new Filter(keyValues[0], 'Contains', value + "");
+					}
+					
 					aFilters.push(oFilter);
 				}
 			});
 			
 			oBinding.filter(aFilters);
+
 			
 		},
 		
-		onPernrFilterChange: function(oEvent) {
-			/*
-			var oNewValue = oEvent.getParameter("value");
-			var oCustomFilter = this._oDialog.getFilterItems()[0];
+		handleConfirm: function(oEvent) {
 			
-			oCustomFilter.setFilterCount(1);
-			oCustomFilter.setSelected(true);
-			
-			
-			this.pernrFilterValue = oNewValue;
-			*/
-			
-			
-			//console.log(oNewValue);
+			this.setSorters(oEvent.getParameters());
+			this.setFilters();
 			
 		},
 		
 		onFilterWorkitems: function(oEvent) {
+			//This handles the filtering function by the search bar
 			var aFilter = [];
 			var sQuery = oEvent.getParameter("query");
 			if(sQuery) {
-				//console.log(sQuery);
+				
 				var filters = [new Filter("title", FilterOperator.Contains, sQuery), new Filter("comments", FilterOperator.Contains, sQuery)]
 				aFilter.push(new Filter(filters, false));
-				//aFilter.push();
+				
 				
 			}
 			
-			var oList = this.getView().byId("workItemsTable");
-			var oBinding = oList.getBinding("items");
+			
+			var oBinding = this.oTable.getBinding("items");
 			oBinding.filter(aFilter);
 			
 		},
 		
 		onHandleRow: function(oEvent) {
+			//This function launches the workitem in a new window 
 			var item = oEvent.getSource().getSelectedItem().getBindingContext().getObject();
 			
 			jQuery.ajax({
@@ -141,7 +165,30 @@ sap.ui.define([
 		},
 		
 		onHandleRefresh: function(oEvent) {
+			//This function handles the refresh button press and reloads the json model
+		this._fetchServerData();	
+		
+		},
+		
+		_setStateRefreshing: function() {
+			
+			this.refreshButton.setVisible(false);
+			this.busyIndicator.setVisible(true);
+
+		},
+		_setStateNormal: function() {
+			
+			this.refreshButton.setVisible(true);
+			this.busyIndicator.setVisible(false);
+		},
+
+		_fetchServerData: function() {
 			var oModel = this.getView().getModel();
+			
+			var that = this;
+
+			this._setStateRefreshing();
+
 			var headers = {
 					'Cache-Control': 'no-cache',
 					Pragma: 'no-cache',
@@ -149,23 +196,29 @@ sap.ui.define([
 						
 			};
 			
-			if(jQuery.sap.getUriParameters().get('test') === 'X') {
+			if(this.testStatus) {
 				
-				oModel.loadData("/zui5_hcmpf_workitems/data/forms.json");
-				
+				setTimeout(function(){
+					
+					oModel.loadData("/zui5_hcmpf_workitems/data/forms.json");
+
+
+					that._setStateNormal();
+
+				}, 3000);
 				
 			} else {
-				
 				//Headers are used to force IE to refresh new data every time the refresh button is hit
-				
 				oModel.loadData("/ui5_workitems", "", true, "GET", false, false, headers);
 				
 			}
 			
 			oModel.attachRequestCompleted(function(){
-				MessageToast.show("Data Refreshed");
+
+				MessageToast.show("Data Loaded");
+				that._setStateNormal();
 			});
-			
+	
 		}
 		
 	});
