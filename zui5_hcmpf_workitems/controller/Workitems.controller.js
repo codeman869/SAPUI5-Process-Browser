@@ -141,7 +141,8 @@ sap.ui.define([
 		
 		onHandleRow: function(oEvent) {
 			//This function launches the workitem in a new window 
-			var item = oEvent.getSource().getSelectedItem().getBindingContext().getObject();
+			//var item = oEvent.getSource().getSelectedItem().getBindingContext().getObject();
+			var item = oEvent.getSource().getBindingContext().getObject();
 			
 			jQuery.ajax({
 				type: "GET",
