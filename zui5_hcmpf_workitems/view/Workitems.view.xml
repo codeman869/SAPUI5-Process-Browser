@@ -114,6 +114,16 @@
 <ObjectAttribute text="{pernr} - {ename}"></ObjectAttribute>
 <ObjectAttribute text="{werks} - {name1}" />
 <ObjectAttribute text="{step}"></ObjectAttribute>
+<ObjectAttribute text="{path: 'creationDate',
+						type: 'sap.ui.model.type.Date',
+						formatOptions: {
+							source: {
+								pattern: 'yyyy-MM-dd'	
+							},
+							style: 'medium'	
+						}
+					}">
+					</ObjectAttribute>
 <ObjectAttribute text="{comments}"></ObjectAttribute>
 </attributes>
 </ObjectListItem>

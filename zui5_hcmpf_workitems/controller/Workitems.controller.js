@@ -82,7 +82,7 @@ sap.ui.define([
 					
 					var keyValues = Item.getKey().split("___");
 					
-					if(keyValues[0] === 'effDate') {
+					if(keyValues[0] === 'effDate' || keyValues[0] === 'creationDate') {
 						//Special handling for the effective date filter
 						var fromDate = oCtrl.getDateValue();
 						var toDate = oCtrl.getSecondDateValue();

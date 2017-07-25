@@ -10,7 +10,8 @@
     "comments": "Updated Process Comments - this form is impossible!",
     "step": " Fifth Step",
     "form": " Hire Employee",
-    "effDate": "2017-07-16"
+    "effDate": "2017-07-16",
+    "creationDate": "2017-07-27"
   },
   {
     "pernr": 1018999,
@@ -22,7 +23,8 @@
     "title": "BES - Hire Employee - 01018999 - Tyrell M - 2393 - Fifth Step",
     "step": " Fifth Step",
     "form": " Hire Employee",
-    "effDate": "2017-01-16"
+    "effDate": "2017-01-16",
+    "creationDate": "2017-01-02"
   },
   {
     "pernr": 1019004,
@@ -35,7 +37,8 @@
     "comments": "Some Processing Comments regarding Sansa Stark's hiring",
     "step": " Fifth Step",
     "form": " Hire Employee",
-    "effDate": "2017-02-16"
+    "effDate": "2017-02-16",
+    "creationDate": "2017-02-01"
   },
   {
     "pernr": 1018997,
@@ -48,6 +51,7 @@
     "comments": "Khal Drogo will be a great future employee",
     "step": " Sixth Step",
     "form": " Hire Employee",
-    "effDate": "2017-03-23"
+    "effDate": "2017-03-23",
+    "creationDate": "2017-03-27"
   }
 ]
