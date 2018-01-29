@@ -1,5 +1,6 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="zui5_hcmpf_workitems.view.Workitems" xmlns:html="http://www.w3.org/1999/xhtml">
+		controllerName="zui5_hcmpf_workitems.controller.Workitems" xmlns:html="http://www.w3.org/1999/xhtml">
+		<!--  
 	<Table items="{/}" id="workItemsTable" selectionChange="onHandleRow" mode="SingleSelectMaster">
 		<headerToolbar>
 			<Toolbar class="sapUiResponsive">
@@ -9,6 +10,7 @@
 				<ToolbarSpacer />
 				<Button icon="sap-icon://refresh" press="onHandleRefresh" class="sapUiResponsiveMargin"  id="refreshButton"/>
 				<ToolbarSpacer />
+				<BusyIndicator text="Retrieving Results" visible="false" id="busyIndicator" />
 				<Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleViewSettings" class="sapUiResponsiveMargin" />
 				
 			</Toolbar>
@@ -20,11 +22,6 @@
 			<Column demandPopin="true" minScreenWidth="800px">
 				<Text text="Process Reference Number" />
 			</Column>
-			<!--  
-			<Column demandPopin="true" minScreenWidth="Tablet">
-				<Text text="Work Item ID" />
-			</Column>
-			-->
 			<Column>
 				<Text text="Bureau" />
 			</Column>
@@ -55,9 +52,6 @@
 				<cells>
 					<Text text="{pernr}" />
 					<Text text="{prn}" />
-					<!--  
-					<Text text="{instId}" />
-					-->
 					<Text text="{werks}" />
 					<Text text="{name1}" />
 					<Text text="{ename}" />
@@ -65,11 +59,75 @@
 					<Text text="{form}" />
 					<Text text="{step}" />
 					<Text text="{path: 'effDate',
-								 formatter: '.formatter.dateText'
+								type: 'sap.ui.model.type.Date',
+								formatOptions : {
+									source: {
+										pattern: 'yyyy-MM-dd'
+									},
+									style: 'medium'
+								}
 								 }" />
 					<Text text="{comments}" />
 				</cells>
 			</ColumnListItem>
 		</items>
 	</Table>
+-->
+<List items="{/}" id="workItemsTable">
+<headerToolbar>
+			<Toolbar class="sapUiResponsive">
+				<Text text="Work Items In Progress" class="sapUiResponsiveMargin"/>
+				<ToolbarSpacer />
+				<SearchField search="onFilterWorkitems" class="sapUiResponsiveMargin" />
+				<ToolbarSpacer />
+				<Button icon="sap-icon://refresh" press="onHandleRefresh" class="sapUiResponsiveMargin"  id="refreshButton"/>
+				<ToolbarSpacer />
+				<BusyIndicator text="Retrieving Results" visible="false" id="busyIndicator" />
+				<Button tooltip="View Settings" icon="sap-icon://drop-down-list" press="handleViewSettings" class="sapUiResponsiveMargin" />
+				
+			</Toolbar>
+		</headerToolbar>
+<items>
+<ObjectListItem type="Active" press="onHandleRow" title="{title}" number="{path: 'prn',
+							formatter: '.formatter.prnFormatter'
+}">
+<firstStatus>
+<ObjectStatus class="sapSmallMarginBottom" text="{path: 'effDate',
+												  type: 'sap.ui.model.type.Date',
+												  formatOptions: {
+														source: {
+															pattern: 'yyyy-MM-dd'	
+														},
+														style: 'medium' 
+												  }	
+											}"
+		icon="{path:'effDate',
+			formatter: '.formatter.dateIcon'	
+		}"
+		state="{path: 'effDate', formatter: '.formatter.dateStatus'}"/>
+</firstStatus>
+<secondStatus>
+<ObjectStatus text="{form}" class="sapSmallMarginBottom"/>
+
+</secondStatus>
+<attributes>
+<ObjectAttribute text="{pernr} - {ename}"></ObjectAttribute>
+<ObjectAttribute text="{werks} - {name1}" />
+<ObjectAttribute text="{step}"></ObjectAttribute>
+<ObjectAttribute text="{path: 'creationDate',
+						type: 'sap.ui.model.type.Date',
+						formatOptions: {
+							source: {
+								pattern: 'yyyy-MM-dd'	
+							},
+							style: 'medium'	
+						}
+					}">
+					</ObjectAttribute>
+<ObjectAttribute text="{comments}"></ObjectAttribute>
+</attributes>
+</ObjectListItem>
+
+</items>
+</List>
 </core:View>
